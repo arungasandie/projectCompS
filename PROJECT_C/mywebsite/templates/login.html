@@ -1,4 +1,26 @@
-{% extends "base.html" %} {% block title %}Log in{% endblock %}
+{% extends "base.html" %}
+<!--{% set active_page = "signup" %}-->
+{% block title %}Login{% endblock %}
 {% block content %}
-<h3>This is the log in page</h3>
-{% endblock %}
+<div class="container-sm mt-4">
+	<form method="POST">
+		<div class="text-center mb-4">
+			<h1 class="h3 mb-3 font-weight-normal">Login To Your Account</h1>
+		</div>
+
+		<div class="form-group">
+			<label for="email">Email</label>
+			<input type="email" id="email" name="email" class="form-control" placeholder="Email Address" required>
+		</div>
+
+		<div class="form-group">
+			<label for="password">Password</label>
+			<input type="password" class="form-control" required placeholder="Password" id="password" name="password" onchange="if(this.checkValidity()) form.password2.pattern = this.value;">
+		</div>
+
+		<button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" id="submit">Submit</button>
+
+		<p class="text-muted text-center mt-5 mb-3">Don't have an account? <a href="{{url_for('auth.signup')}}">Register here.</a></p>
+	</form>
+</div>
+{% endblock %} 
