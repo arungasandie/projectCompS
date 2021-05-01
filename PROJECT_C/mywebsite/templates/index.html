@@ -1,5 +1,40 @@
 {% extends "base.html" %} 
 {% block title %}The Ohm Depot{% endblock %}
 {% block content %}
-
+<head>
+    <link rel="stylesheet" type="text/css" href="../static/static/css/style.css">
+    <h2>Welcome to the Ohm Depot.</h2>
+</head>
+<body>
+    <div class ="header">
+        <div class="row">
+            <diV class="col-2a">
+                <h1>Shop the best</br> technology</br> on the market</h1>
+                <h2>From your favourite brands</h2>
+                <a class="btn btn-info" href="/home" role="button">Explore Now &#8594;</a>
+            </diV>
+            <div class="col-2b">
+                <img src="../static/static/img/gadgets.jpg">
+            </div>
+        </div>
+    </div>
+    <!--featured categories -->
+    <div class="categories mb-4">
+        <h2 style="text-align: center;">Featured products </h2>
+        <div class = "small-container">
+            <div class = "row">
+                <div class="col-3">
+                    <img src="../static/static/img/speaker3.jpeg">
+                </div>
+                <div class="col-3">
+                    <img src="../static/static/img/phone5.jpg">
+                </div>
+                <div class="col-3">
+                    <img src="../static/static/img/laptop3.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
 {% endblock %}

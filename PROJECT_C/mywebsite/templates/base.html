@@ -8,6 +8,8 @@
     />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous"
     />
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+
     <title>{% block title %}Home{% endblock %}</title>
 
 </head>
@@ -24,14 +26,14 @@
                 <div class = "navbar-nav" style="text-align: right;">
                     <a class = "nav-item nav-link" id="home" href="/home">Home</a>
                     <a class = "nav-item nav-link" id="home" href="/products">Products</a>
+                    <a class = "nav-item nav-link" id="signUp" href="/sign-up">Sign up</a>
                     <a class = "nav-item nav-link" id="login" href="/login">Login</a>
                     <a class = "nav-item nav-link" id="logout" href="/logout">Log Out</a>
-                    <a class = "nav-item nav-link" id="signUp" href="/sign-up">Sign up</a>
-                    
-
+                    <img src="https://img.icons8.com/dotty/80/000000/shopping-cart.png" width="30px" height="30px"/> 
                 </div>
             </div>
         </nav>
+        
     </div>
     <div class= "container">
         {% block content %}
@@ -53,3 +55,45 @@
     {% endblock %}
     </div>
 </body>
+<!-- Footer -->
+<footer class="page-footer font-small teal darken-3 bg-dark">
+    <div class="container">
+        <h2 style="color: white;">The Ohm Depot</h2>
+        <h3 style="color: white;">Electronics Store</h3>
+        <!--brands -->
+        <div class="brands">
+            <h4 style="color: whitesmoke; text-align: center;">In association with </h4>
+            <div class= "small-container">
+                <div class="row">
+                    <a href="#"><img src="https://img.icons8.com/color/48/000000/samsung.png"/></a>
+                    <a href="#"><img src="https://img.icons8.com/carbon-copy/100/000000/mac-os.png"/></a>
+                    <a href="#"><img src="https://img.icons8.com/fluent/48/000000/jbl.png"/></a>
+                    <a href="#"><img src="https://img.icons8.com/windows/32/000000/huawei-logo.png"/></a></br>
+                </div>
+            </div>
+        </div>
+       <div class="row">
+        <h4 style="color: whitesmoke; text-align: center;">Find us on </h4>
+        <div class="col-md-12 py-5">
+          <div class=" flex-center" style="text-align: center;">
+            <!-- Facebook -->
+            <a href="#"><img src="https://img.icons8.com/bubbles/100/000000/facebook-new.png"/></a>
+            <!-- Twitter -->
+            <a href="#"><img src="https://img.icons8.com/bubbles/100/000000/twitter.png"/></a>
+            <!--Instagram-->
+            <a href="#"><img src="https://img.icons8.com/bubbles/100/000000/instagram-new.png"/></a>
+            <!--Pinterest-->
+            <a class="pin-ic">
+                <img src="https://img.icons8.com/bubbles/100/000000/behance.png"/>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer Elements -->
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3" style="color: white;">© Sandie 2021 Copyright:
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
