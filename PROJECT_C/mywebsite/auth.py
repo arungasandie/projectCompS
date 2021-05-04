@@ -3,9 +3,13 @@ from flask import Flask , redirect, url_for, session, logging, request
 from flask.globals import request
 from flask.signals import message_flashed
 from flask_sqlalchemy import SQLAlchemy
+# to use mysql
 from flask_mysqldb import MySQL
+# to get data from forms
 from wtforms import Form, StringField, TextAreaField, PasswordField, IntegerField, RadioField, validators
-from passlib.hash import sha256_crypt #for password encryption
+# for password encryption
+from werkzeug.security import generate_password_hash,check_password_hash
+from passlib.hash import sha256_crypt
 from functools import wraps
 
 auth = Blueprint('auth', __name__)
@@ -35,9 +39,10 @@ class RegisterForm(Form):
     username = StringField('Username', [validators.Length(min=2, max = 25 )])
     email = StringField('Email', [validators.Length(min=6 , max =50)])
     contact = IntegerField('Contact')
-    password = PasswordField('password1')
+    
     password1 = PasswordField('password2')
     usertype = RadioField('usertype')
+   
 
 @auth.route('/sign-up',methods=['GET','POST'])
 def signup():
@@ -62,12 +67,13 @@ def signup():
             flash('Contact must be greater than 8 digits', category='error')
         else:
             flash('Account created!', category='success')
-        
+            password = sha256_crypt.encrypt(str(password1))
             #Cursor
             cur = mysql.connection.cursor()
             
             #Execute query
-            cur.execute("INSERT INTO users(username, email, contact, password, usertype) VALUES(%s, %s, %s, %s, %s)", (username,email,contact,password1,usertype))
+            password=generate_password_hash(password1, method='sha256')
+            cur.execute("INSERT INTO users(username, email, contact, password, usertype) VALUES(%s, %s, %s, %s, %s)", (username,email,contact,password,usertype))
 
             #Commit to DB
             mysql.connection.commit()
