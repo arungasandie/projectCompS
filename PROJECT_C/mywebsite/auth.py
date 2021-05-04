@@ -17,20 +17,21 @@ def signup():
         username = request.form.get('username')
         email = request.form.get('email')
         contact = request.form.get('contact')
-        password1 = request.form.get('password')
-        username = request.form.get('password2')
+        password1 = request.form.get('password1')
+        password2 = request.form.get('password2')
         usertype = request.form.get('usertype')
         
         if len(email) < 4:
-            pass
+            flash('Email must be greater than 4 characters',category='error')
         elif len(username) < 2:
-            pass
+            flash('Username must be greater than 1 character', category='error')
         elif password1 != password2:
-            pass
-        elif len(password) < 7:
-            pass
+            flash('Passwords don\'t match', category='error')
+        elif len(password1) < 7:
+            flash('Password must be atleast 7 characters', category='error')
         elif len(contact) < 8:
-            pass
+            flash('Contact must be greater than 8 digits', category='error')
         else:
-            pass
+            flash('Account created!', category='success')
+
     return render_template("signup.html") 
