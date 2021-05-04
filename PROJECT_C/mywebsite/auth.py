@@ -27,7 +27,8 @@ mysql = MySQL(app)
 
 @auth.route('/login',methods=['GET','POST'])
 def login():
-    data = request.form
+            
+
     return render_template("login.html")
 
 @auth.route('/logout')
