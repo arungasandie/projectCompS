@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template, request, flash
+from flask import Blueprint,render_template, request,flash
 from flask import Flask , redirect, url_for, session, logging, request
 from flask.globals import request
 from flask.signals import message_flashed
@@ -26,9 +26,37 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
 @auth.route('/login',methods=['GET','POST'])
-def login():      
-    return render_template("login.html")
-    
+def login():
+    if request.method == 'POST':
+        # Get Form Fields
+        username = request.form['username']
+        password_candidate = request.form['password']
+
+        # Create cursor
+        cur = mysql.connection.cursor()
+
+        # Get user by username
+        result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+        if result > 0:
+            # Get stored hash
+            data = cur.fetchone()
+            password = data['password']
+            
+            # Compare Passwords
+            if sha256_crypt.verify(password_candidate, password):
+                flash('You are now logged in', 'success')
+                return redirect(url_for('views.home'))
+            else:
+                flash('Invalid login', category='error' )
+                return render_template('login.html')
+        else:
+            error = 'Username not found'
+            return render_template('login.html',category='error')
+
+    return render_template('login.html')
+
+# Check if user logged in 
+
 @auth.route('/loginoptions')
 def loginoption():
     return render_template("loginoptions.html")
