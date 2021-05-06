@@ -26,10 +26,12 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
 @auth.route('/login',methods=['GET','POST'])
-def login():
-            
-
+def login():      
     return render_template("login.html")
+    
+@auth.route('/loginoptions')
+def loginoption():
+    return render_template("loginoptions.html")
 
 @auth.route('/logout')
 def logout():
@@ -87,3 +89,28 @@ def signup():
             return redirect(url_for('auth.login'))
 
     return render_template("signup.html") 
+
+@auth.route('/cart')
+def cart():
+    return render_template("cart.html")
+
+@auth.route('/mhome')
+def mhome():
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM stock")
+    products = cur.fetchall()
+
+    if result > 0 :
+        return render_template('managerhome.html' ,products=products)
+    else:
+        msg = "No products found"
+        return render_template('managerhome.html', msg =  msg)
+
+    res = cur.execute("SELECT * FROM sales")
+    sales = cur.fetchall()
+    if res < 1:
+        msg="No sales found" 
+        return render_template('managerhome.html', msg =  msg)
+    #Close connection
+    cur.close()
+    return render_template("managerhome.html")

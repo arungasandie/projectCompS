@@ -8,7 +8,7 @@
     />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous"
     />
-    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <link rel="stylesheet" href="../static/static/css/home.css">
 
     <title>{% block title %}Home{% endblock %}</title>
 
@@ -18,22 +18,38 @@
         <div class= "logo">
             <img src = "" width=125px>
         </div>
-        <nav class = "navbar navbar-expand-lg navbar-dark bg-dark">
-            <button class = "navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
-                <span class ="navbar-toggler-icon"></span>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">The Ohm Depot</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbar">
-                <div class = "navbar-nav" style="text-align: right;">
-                    <a class = "nav-item nav-link" id="home" href="/home">Home</a>
-                    <a class = "nav-item nav-link" id="home" href="/products">Products</a>
-                    <a class = "nav-item nav-link" id="signUp" href="/sign-up">Sign up</a>
-                    <a class = "nav-item nav-link" id="login" href="/login">Login</a>
-                    <a class = "nav-item nav-link" id="logout" href="/logout">Log Out</a>
-                    <img src="https://img.icons8.com/dotty/80/000000/shopping-cart.png" width="30px" height="30px"/> 
-                </div>
+        
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+              <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/products">Products</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/sign-up">Sign Up</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/loginoptions">Log In</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/logout">Log Out</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/cart">
+                    <img src="https://img.icons8.com/offices/30/000000/add-shopping-cart.png"/></a>
+                </li>
+              </ul>
             </div>
+          </div>
         </nav>
-
         {% with messages = get_flashed_messages(with_categories=true) %} {% if
             messages %} {% for category, message in messages %} {% if category ==
             'error' %}
