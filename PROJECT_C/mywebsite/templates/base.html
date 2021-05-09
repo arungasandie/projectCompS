@@ -33,15 +33,18 @@
                 <li class="nav-item">
                   <a class="nav-link" href="/products">Products</a>
                 </li>
+                {% if session.logged_in %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/logout">Log Out</a>
+                </li>
+                {% else %}
                 <li class="nav-item">
                   <a class="nav-link" href="/sign-up">Sign Up</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/loginoptions">Log In</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/logout">Log Out</a>
-                </li>
+                {% endif %}
                 <li class="nav-item">
                   <a class="nav-link" href="/cart">
                     <img src="https://img.icons8.com/offices/30/000000/add-shopping-cart.png"/></a>
