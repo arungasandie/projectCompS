@@ -28,34 +28,44 @@ mysql = MySQL(app)
 @auth.route('/login',methods=['GET','POST'])
 def login():
     if request.method == 'POST':
-        # Get Form Fields
+        #Get form fields
         username = request.form['username']
         password_candidate = request.form['password']
 
-        # Create cursor
+        #Create Cursor
         cur = mysql.connection.cursor()
 
-        # Get user by username
+        #Get user by username
         result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+
         if result > 0:
-            # Get stored hash
+            #Get stored hash
             data = cur.fetchone()
             password = data['password']
-            
-            # Compare Passwords
+
+            #Compare Passwords
             if sha256_crypt.verify(password_candidate, password):
-                flash('You are now logged in', 'success')
+                app.logger.info('PASSWORD MATCH')
+                #Passed
+                session['logged_in'] = True
+                session['username'] = username
+
+                flash("You are now logged in" , 'success')
                 return redirect(url_for('views.home'))
             else:
-                flash('Invalid login', category='error' )
-                return render_template('login.html')
+                error = 'Invalid login'
+                app.logger.info('PASSWORD NOT MATCHED')
+                return render_template('login.html', error = error)
+            
+            #close connection
+            cur.close()
+
         else:
             error = 'Username not found'
-            return render_template('login.html',category='error')
+            return render_template('login.html', error = error)
 
-    return render_template('login.html')
+    return render_template('login.html') 
 
-# Check if user logged in 
 
 @auth.route('/loginoptions')
 def loginoption():
@@ -63,7 +73,9 @@ def loginoption():
 
 @auth.route('/logout')
 def logout():
-    return render_template("logout.html")
+    session.clear()
+    flash('You are now logged out' , 'success')
+    return redirect(url_for('auth.login'))
 
 #Register Form Class
 class RegisterForm(Form):
@@ -85,6 +97,7 @@ def signup():
         password2 = request.form.get('password2')
         usertype = request.form.get('usertype')
         
+        password = sha256_crypt.encrypt(str(password1))
 
         if len(email) < 6:
             flash('Email must be greater than 6 characters',category='error')
@@ -97,14 +110,12 @@ def signup():
         elif len(contact) < 8:
             flash('Contact must be greater than 8 digits', category='error')
         else:
-            flash('Account created!', category='success')
-            password = sha256_crypt.encrypt(str(password1))
+            
             #Cursor
             cur = mysql.connection.cursor()
             
             #Execute query
-            password=generate_password_hash(password1, method='sha256')
-            cur.execute("INSERT INTO users(username, email, contact, password, usertype) VALUES(%s, %s, %s, %s, %s)", (username,email,contact,password,usertype))
+            cur.execute("INSERT INTO users(username, password, email, contact, usertype) VALUES(%s, %s, %s, %s,%s)", (username,password,email,contact,usertype))
 
             #Commit to DB
             mysql.connection.commit()
@@ -116,7 +127,7 @@ def signup():
 
             return redirect(url_for('auth.login'))
 
-    return render_template("signup.html") 
+    return render_template('signup.html')
 
 @auth.route('/cart')
 def cart():
