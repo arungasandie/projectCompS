@@ -12,12 +12,12 @@
     <div class = "small-container">
         <div class = "row mt-4">
             <div class="col-mb-4">
-                {% for lap in laptop %}
+                {% for laptop in laptops %}
                 <div class="card">
                     <div class="card-body">
-                        <img src="../static/static/img/{{lap.item_name}}.jpg" class="card-img-top" alt="#laptop image">
-                        <h2 class="card-title">{{lap.item_name}}</h2>
-                        <h3 class="card-text" style="font-weight: bold;">{{lap.item_price}}</h3>
+                        <img src="../static/static/img/{{laptop.item_name}}.jpg" class="card-img-top" alt="#laptop image">
+                        <h2 class="card-title">{{laptop.item_name}}</h2>
+                        <h3 class="card-text" style="font-weight: bold;">KSH.{{laptop.item_price}}</h3>
                     </div>
                 </div>
                 {% endfor %}
@@ -31,12 +31,12 @@
     <div class = "small-container">
         <div class = "row mt-4">
             <div class="col-mb-4">
-                {% for pho in phone %}
+                {% for phone in phones %}
                 <div class="card">
                     <div class="card-body">
-                        <img src="../static/static/img/{{pho.item_name}}.jpg" class="card-img-top" alt="#laptop image">
-                        <h2 class="card-title">{{pho.item_name}}</h2>
-                        <h3 class="card-text" style="font-weight: bold;">{{pho.item_price}}</h3>
+                        <img src="../static/static/img/{{phone.item_name}}.jpg" class="card-img-top" alt="#laptop image">
+                        <h2 class="card-title">{{phone.item_name}}</h2>
+                        <h3 class="card-text" style="font-weight: bold;">{{phone.item_price}}</h3>
                     </div>
                 </div>
                 {% endfor %}
@@ -50,12 +50,12 @@
     <div class = "small-container">
         <div class = "row mt-4">
             <div class="col-mb-4">
-                {% for aud in audio %}
+                {% for audio in audios %}
                 <div class="card">
                     <div class="card-body">
-                        <img src="../static/static/img/{{aud.item_name}}.jpg" class="card-img-top" alt="#laptop image">
-                        <h2 class="card-title">{{aud.item_name}}</h2>
-                        <h3 class="card-text" style="font-weight: bold;">{{aud.item_price}}</h3>
+                        <img src="../static/static/img/{{audio.item_name}}.jpg" class="card-img-top" alt="#laptop image">
+                        <h2 class="card-title">{{audio.item_name}}</h2>
+                        <h3 class="card-text" style="font-weight: bold;">{{audio.item_price}}</h3>
                     </div>
                 </div>
                 {% endfor %}

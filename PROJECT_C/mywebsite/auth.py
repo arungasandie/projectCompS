@@ -157,7 +157,7 @@ def cart():
 @auth.route('/addtocart')
 @is_logged_in
 def addtocart():
-    cur = mysql.connection.cursor():
+    cur = mysql.connection.cursor()
     add = cur.execute("INSERT INTO sales VALUES(?,?,?)")
 
 @auth.route('/mhome')

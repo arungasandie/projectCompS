@@ -16,7 +16,29 @@ app.config['MYSQL_USER'] = 'sandra'
 app.config['MYSQL_PASSWORD'] = '1234'
 app.config['MYSQL_DB'] = 'projectsandra'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+def laptop():
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM stock WHERE group_id = 1")
+    laptops = cur.fetchall()
+    cur.close
 
+    return laptops
+
+def phone():
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM stock WHERE group_id = 2")
+    phones = cur.fetchall()
+    cur.close()
+
+    return phones
+
+def audio():
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM stock WHERE group_id = 3")
+    audio = cur.fetchall()
+    cur.close()
+
+    return audio 
 #Initialize MySQL
 mysql = MySQL(app)
 @views.route('/')
@@ -26,14 +48,17 @@ def welcome():
 @views.route('/home')
 def home():
     cur = mysql.connection.cursor()
-    laptops = cur.execute("SELECT * FROM stock WHERE group_id = 1")
-    laptop = cur.fetchall()
-    phones = cur.execute("SELECT * FROM stock WHERE group_id = 2")
-    phone = cur.fetchall()
-    audioequip = cur.execute("SELECT * FROM stock WHERE group_id = 3")
-    audio = cur.fetchall()
-    cur.close()
-    return render_template("home.html")
+    result = cur.execute("SELECT * FROM stock WHERE group_id = 1;")
+    laptops = laptop()
+    phones = phone()
+    audios = audio()
+    if result > 0 :
+        return render_template('home.html' ,laptops=laptops, phones=phones, audios=audios)
+    else:
+        msg = "No laptops found"
+        return render_template('home.html', homemsg =  msg)
+    
+    return render_template('home.html')
 
 @views.route('/products')
 def products():
@@ -63,3 +88,5 @@ def product(id):
     product = cur.fetchone()
 
     return render_template('view_product.html', product=product)
+
+
