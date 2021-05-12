@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
+{% block title %}Ohm Depot{% endblock %}
 {% block content %}
-    <h1>{{product.item_name}}</h1>
-    <div class="product-group">
-        <img src="../static/static/img/{{product.item_name}}.jpg"></br>
-        <h3>Brand {{product.item_brand}}</h3>
-        <h4>KSH. {{product.item_price}}</h4>
-        <h3>Item decription</h3>
-        <div>
-       Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-       Odit aliquam, corrupti necessitatibus blanditiis error dolorum 
-       at eum eos rem autem tenetur facere tempora nisi, non, architecto ullam similique quos laboriosam.
-        </div></br>
-    </div>
-    
-    <p><input class="btn btn-primary" type="submit" value="Add To Cart"></p>
-    
+<a class="btn btn-info" href="/products" role="button">&#8592;Back</a></br>
+<!--have to use absolute path -->
+<img src="http://127.0.0.1:5000/static/static/img/{{product.item_name}}.jpg" width="200" height="200">
+<h1>{{product.item_name}}</h1>
+<h3>Brand {{product.item_brand}}</h3>
+<h4>KSH. {{product.item_price}}</h4>
+<h3>Item decription</h3>
+<div>
+Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+Odit aliquam, corrupti necessitatibus blanditiis error dolorum 
+at eum eos rem autem tenetur facere tempora nisi, non, architecto ullam similique quos laboriosam.
+</div></br>
+
+
+<p><input class="btn btn-primary" type="submit" value="Add To Cart"></p>
+
 {% endblock %}

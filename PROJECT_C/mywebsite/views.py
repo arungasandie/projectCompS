@@ -72,8 +72,8 @@ def products():
         msg = "No products found"
         return render_template('products.html', msg =  msg)
 
-        #Close connection
-        cur.close()
+    #Close connection
+    cur.close()
     return render_template("products.html")
 
 @views.route('/products/<string:id>/')
@@ -81,12 +81,21 @@ def product(id):
 
     #Create Cursor
     cur = mysql.connection.cursor()
-
     #Get articles
     result = cur.execute("SELECT * FROM stock WHERE item_id = %s",[id])
-
     product = cur.fetchone()
+    if result > 0:
+        return render_template('view_product.html', product=product)
+        
+    else:
+        msg = "Product was not found"
+        return render_template('view_product.html', msg =  msg)
+      
+    #Close connection
+    cur.close()
+    return render_template("view_product.html")
 
-    return render_template('view_product.html', product=product)
 
 
+
+    
