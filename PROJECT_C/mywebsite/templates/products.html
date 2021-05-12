@@ -1,27 +1,28 @@
 {% extends "base.html" %} 
 {% block title %}Products{% endblock %}
+
 {% block content %}
-<h1>Products</h1>
-    <table class="table table-striped">
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Item brand</th>
-            <th>Item Image</th>
-            <th>Item Price</th>
-            <th></th>
-        </tr>
-        {% for product in products %}
-        <tr>
-            <td>{{product.item_id}}</td>
-            <td>{{product.item_name}}</td>
-            <td>{{product.item_brand}}</td>
-            <td><img src="../static/static/img/{{product.item_name}}.jpg"></td>
-            <td>{{product.item_price}}</td>
-            
-            <td><a href="/cart" class="btn btn-success pull-right"> Add To Cart</a></td>
-        </tr>
-        {%endfor%}
-    </table>
-    
+    <h1>Products</h1>
+        <table class="table table-striped">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Item brand</th>
+                <th>Item Image</th>
+                <th>Item Price</th>
+                <th></th>
+            </tr>
+            {% for product in products %}
+            <tr>
+                <td>{{product.item_id}}</td>
+                <td>{{product.item_name}}</td>
+                <td>{{product.item_brand}}</td>
+                <td><img src="../static/static/img/{{product.item_name}}.jpg"></td>
+                <td>{{product.item_price}}</td>
+                
+                <td><a href="products/{{product.item_id}}" class="btn btn-success pull-right"> View</a></td>
+            </tr>
+            {%endfor%}
+        </table>
+        
 {% endblock %}

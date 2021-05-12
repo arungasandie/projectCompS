@@ -141,8 +141,24 @@ def signup():
     return render_template('signup.html')
 
 @auth.route('/cart')
+@is_logged_in
 def cart():
+    cur = mysql.connection.cursor()
+    username = session['username']
+    # result = cur.execute("SELECT sales.sale_id,sales.serial_number,stock.item_name,stock.item_brand,stock.item_price,users.username FROM users,stock,sales WHERE WHERE username = %s",[username])           
+    # mycart = cur.fetchall()
+    # if result < 1:
+    #     msg="No items found found"
+    #     return render_template('cart.html', msg =  msg)
+    # Close connection
+    # cur.close()
     return render_template("cart.html")
+
+@auth.route('/addtocart')
+@is_logged_in
+def addtocart():
+    cur = mysql.connection.cursor():
+    add = cur.execute("INSERT INTO sales VALUES(?,?,?)")
 
 @auth.route('/mhome')
 def mhome():
@@ -159,7 +175,7 @@ def mhome():
     res = cur.execute("SELECT * FROM sales")
     sales = cur.fetchall()
     if res < 1:
-        msg="No sales found" 
+        msg="No sales found"
         return render_template('managerhome.html', msg =  msg)
     #Close connection
     cur.close()

@@ -1,5 +1,26 @@
 {% extends "base.html" %} 
 {% block title %}My Cart{% endblock %}
 {% block content %}
-<h3>Cart page</h3>
+
+<table class="table table-striped">
+    <tr>
+        <th>Sale ID</th>
+        <th>Serial number</th>
+        <th>Item name</th>
+        <th>Item Brand</th>
+        <th>Item Price</th>
+        <th>Username</th>
+    </tr>
+    <!--{% for item in mycart %}
+    <tr>
+        <td>{{item.sale_id}}</td>
+        <td>{{item.serial_number}}</td>
+        <td>{{item.item_name}}</td>
+        <td>{{item.item_brand}}</td>
+        <td>{{item.item_price}}</td>
+        <td>{{item.username}}</td>
+    </tr>
+    {%endfor%}-->
+</table>
+<a class="btn btn-info" href="/addtocart" role="button">Add To Cart</a>
 {% endblock %}

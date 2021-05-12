@@ -25,6 +25,14 @@ def welcome():
 
 @views.route('/home')
 def home():
+    cur = mysql.connection.cursor()
+    laptops = cur.execute("SELECT * FROM stock WHERE group_id = 1")
+    laptop = cur.fetchall()
+    phones = cur.execute("SELECT * FROM stock WHERE group_id = 2")
+    phone = cur.fetchall()
+    audioequip = cur.execute("SELECT * FROM stock WHERE group_id = 3")
+    audio = cur.fetchall()
+    cur.close()
     return render_template("home.html")
 
 @views.route('/products')
@@ -39,6 +47,19 @@ def products():
         msg = "No products found"
         return render_template('products.html', msg =  msg)
 
-    #Close connection
-    cur.close()
+        #Close connection
+        cur.close()
     return render_template("products.html")
+
+@views.route('/products/<string:id>/')
+def product(id):
+
+    #Create Cursor
+    cur = mysql.connection.cursor()
+
+    #Get articles
+    result = cur.execute("SELECT * FROM stock WHERE item_id = %s",[id])
+
+    product = cur.fetchone()
+
+    return render_template('view_product.html', product=product)
