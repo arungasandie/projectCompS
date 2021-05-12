@@ -5,22 +5,28 @@
 <table class="table table-striped">
     <tr>
         <th>Sale ID</th>
-        <th>Serial number</th>
+        <th>Item ID</th>
         <th>Item name</th>
-        <th>Item Brand</th>
+        <th>Quantity</th>
         <th>Item Price</th>
-        <th>Username</th>
+        <th>Total</th>
     </tr>
-    <!--{% for item in mycart %}
+    {% for item in cart %}
+    
     <tr>
+        
         <td>{{item.sale_id}}</td>
-        <td>{{item.serial_number}}</td>
+        <td>{{item.item_id}}</td>
         <td>{{item.item_name}}</td>
-        <td>{{item.item_brand}}</td>
+        <td>{{item.quantity}}</td>
         <td>{{item.item_price}}</td>
-        <td>{{item.username}}</td>
+        <td>{{item.item_price*item.quantity}}</td>
     </tr>
-    {%endfor%}-->
+    
+    {% endfor %}
 </table>
-<a class="btn btn-info" href="/addtocart" role="button">Add To Cart</a>
+</br>
+<a href="/products"><button type="button" class="btn btn-primary checkout">Continue Shopping</button></a>
+<a href="/checkout"><button type="button" class="btn btn-success checkout">Proceed to Checkout</button></a></br>
+
 {% endblock %}

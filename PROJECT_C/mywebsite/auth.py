@@ -1,3 +1,4 @@
+from mywebsite.views import product
 from flask import Blueprint,render_template, request,flash
 from flask import Flask , redirect, url_for, session, logging, request
 from flask.globals import request
@@ -145,20 +146,29 @@ def signup():
 def cart():
     cur = mysql.connection.cursor()
     username = session['username']
-    # result = cur.execute("SELECT sales.sale_id,sales.serial_number,stock.item_name,stock.item_brand,stock.item_price,users.username FROM users,stock,sales WHERE WHERE username = %s",[username])           
-    # mycart = cur.fetchall()
-    # if result < 1:
-    #     msg="No items found found"
-    #     return render_template('cart.html', msg =  msg)
-    # Close connection
-    # cur.close()
+    result = cur.execute("SELECT sales.sale_id, sales.item_id, sales.quantity, stock.item_name, stock.item_price, users.username FROM sales JOIN users ON sales.c_id = users.c_id JOIN stock ON sales.item_id = stock.item_id WHERE users.username = %s",[username])
+    cart = cur.fetchall()
+    if result < 1:
+        msg="No items found found"
+        return render_template('cart.html', msg =  msg)
+    else:
+        return render_template('cart.html', cart=cart)
+    
+    cur.close()
     return render_template("cart.html")
 
-@auth.route('/addtocart')
+@auth.route('<string:id>/addtocart')
 @is_logged_in
-def addtocart():
+def addtocart(id):
     cur = mysql.connection.cursor()
-    add = cur.execute("INSERT INTO sales VALUES(?,?,?)")
+    add = cur.execute("INSERT INTO sales (item_id) VALUES(%s)",[id])
+    mysql.connection.commit()
+    cur.close()
+    flash('Order Made!','success')
+    return redirect(url_for('auth.cart'))
+    return render_template("cart.html")
+    
+   
 
 @auth.route('/mhome')
 def mhome():
@@ -180,3 +190,8 @@ def mhome():
     #Close connection
     cur.close()
     return render_template("managerhome.html")
+
+@auth.route('/checkout')
+def checkout():
+    return render_template("checkout.html")
+    
