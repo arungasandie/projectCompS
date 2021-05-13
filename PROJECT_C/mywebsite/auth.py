@@ -157,18 +157,40 @@ def cart():
     cur.close()
     return render_template("cart.html")
 
-@auth.route('<string:id>/addtocart')
+
+@auth.route('/addtocart/<string:id>',methods=['GET','POST'])
 @is_logged_in
 def addtocart(id):
-    cur = mysql.connection.cursor()
-    add = cur.execute("INSERT INTO sales (item_id) VALUES(%s)",[id])
-    mysql.connection.commit()
-    cur.close()
-    flash('Order Made!','success')
-    return redirect(url_for('auth.cart'))
-    return render_template("cart.html")
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+
+        cur.execute("INSERT INTO sales(item_id, username) VALUES(%s,%s)", (id,session['username']))
+
+        mysql.connection.commit()
+
+        #Close Connection
+        cur.close()
+        flash("Order Created!", 'success')
+
+        return redirect(url_for('auth.cart'))
+
+    return render_template('view_article.html')    
     
-   
+#Delete Product
+@auth.route('/deleteproduct/<string:id>')
+@is_logged_in
+def delete_product(id):
+    cur = mysql.connection.cursor()
+
+    cur.execute("DELETE FROM sales WHERE sale_id = %s ", [id])
+
+    mysql.connection.commit()
+
+    cur.close()
+
+    flash("Order deleted", 'success')
+
+    return redirect(url_for('auth.cart'))
 
 @auth.route('/mhome')
 def mhome():
