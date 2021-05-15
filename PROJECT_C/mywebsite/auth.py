@@ -1,4 +1,5 @@
 from mywebsite.views import product
+from mywebsite.views import home
 from flask import Blueprint,render_template, request,flash
 from flask import Flask , redirect, url_for, session, logging, request
 from flask.globals import request
@@ -148,6 +149,8 @@ def signup():
 def cart():
     cur = mysql.connection.cursor()
     username = session['username']
+    cur.execute("SELECT sum(subtotal) FROM sales")
+    total=cur.fetchone() 
     result = cur.execute("SELECT sales.sale_id, sales.item_id, sales.quantity, stock.item_name, stock.item_price, users.username FROM sales JOIN users ON sales.c_id = users.c_id JOIN stock ON sales.item_id = stock.item_id WHERE users.username = %s",[username])
     cart = cur.fetchall()
     if result < 1:
@@ -160,37 +163,32 @@ def cart():
     return render_template("cart.html")
 
 
-@auth.route('/addtocart/<string:id>', methods=['GET','POST'])
-@is_logged_in
+
+@auth.route('/addtocart/<string:id>',methods=['GET','POST'])
 def addtocart(id):
     if request.method == 'POST':
-        quantity = request.form.get('quantity')
+        username = session['username']
+        #Get form fields
+        quantity = request.form['quantity']
+
         #Create Cursor
         cur = mysql.connection.cursor()
-        
-        username = session['username']
-        
-        # get c_id from users table
-        c_id =cur.execute("SELECT users.c_id FROM users JOIN sales ON users.username = sales.%s",[username])
-        cid = cur.fetchone()
-        # insert order to sales
-        cur.execute("INSERT INTO sales (item_id, username, quantity, c_id) VALUES (%s,%s,%s,%s)",(id,username,quantity,cid))
-        mysql.connection.commit()
 
+        #Get user by username
+        cur.execute("INSERT INTO sales (item_id, username, quantity, status) VALUES (%s,%s,%s,'PLACED')",(id, username, quantity))
+        #commit to database 
+        mysql.connection.commit()
+         
         #Close Connection
         cur.close()
 
         flash("Product added to cart" , 'success')
 
-        return redirect(url_for('auth.cart'))
+        return redirect(url_for('views.home'))
 
-    else:
-            error = 'Order not made'
-            return render_template('products.html', error = error)
+    return render_template('products.html')
 
-   
-    return render_template('cart.html')  
-    
+           
 #Delete Product
 @auth.route('/deleteproduct/<string:id>')
 @is_logged_in
