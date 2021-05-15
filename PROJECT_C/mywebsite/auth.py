@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 # to use mysql
 from flask_mysqldb import MySQL
 # to get data from forms
-from wtforms import Form, StringField, TextAreaField, PasswordField, IntegerField, RadioField, validators
+from wtforms import Form, StringField, TextAreaField, PasswordField, IntegerField, RadioField, form, validators
 # for password encryption
 from werkzeug.security import generate_password_hash,check_password_hash
 from passlib.hash import sha256_crypt
@@ -141,6 +141,8 @@ def signup():
 
     return render_template('signup.html')
 
+
+
 @auth.route('/cart')
 @is_logged_in
 def cart():
@@ -158,23 +160,36 @@ def cart():
     return render_template("cart.html")
 
 
-@auth.route('/addtocart/<string:id>',methods=['GET','POST'])
+@auth.route('/addtocart/<string:id>', methods=['GET','POST'])
 @is_logged_in
 def addtocart(id):
     if request.method == 'POST':
+        quantity = request.form.get('quantity')
+        #Create Cursor
         cur = mysql.connection.cursor()
-
-        cur.execute("INSERT INTO sales(item_id, username) VALUES(%s,%s)", (id,session['username']))
-
+        
+        username = session['username']
+        
+        # get c_id from users table
+        c_id =cur.execute("SELECT users.c_id FROM users JOIN sales ON users.username = sales.%s",[username])
+        cid = cur.fetchone()
+        # insert order to sales
+        cur.execute("INSERT INTO sales (item_id, username, quantity, c_id) VALUES (%s,%s,%s,%s)",(id,username,quantity,cid))
         mysql.connection.commit()
 
         #Close Connection
         cur.close()
-        flash("Order Created!", 'success')
+
+        flash("Product added to cart" , 'success')
 
         return redirect(url_for('auth.cart'))
 
-    return render_template('view_article.html')    
+    else:
+            error = 'Order not made'
+            return render_template('products.html', error = error)
+
+   
+    return render_template('cart.html')  
     
 #Delete Product
 @auth.route('/deleteproduct/<string:id>')

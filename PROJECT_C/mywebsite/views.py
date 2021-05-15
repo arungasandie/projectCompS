@@ -60,6 +60,24 @@ def home():
     
     return render_template('home.html')
 
+@views.route('/products/<string:id>/')
+def product(id):
+    #Create Cursor
+    cur = mysql.connection.cursor()
+    #Get articles
+    result = cur.execute("SELECT * FROM stock WHERE item_id = %s",[id])
+    product = cur.fetchone()
+    if result > 0:
+        return render_template('view_product.html', product=product)
+        
+    else:
+        msg = "Product was not found"
+        return render_template('view_product.html', msg =  msg)
+      
+    #Close connection
+    cur.close()
+    return render_template("view_product.html")
+
 @views.route('/products')
 def products():
     cur = mysql.connection.cursor()
@@ -76,24 +94,9 @@ def products():
     cur.close()
     return render_template("products.html")
 
-@views.route('/products/<string:id>/')
-def product(id):
 
-    #Create Cursor
-    cur = mysql.connection.cursor()
-    #Get articles
-    result = cur.execute("SELECT * FROM stock WHERE item_id = %s",[id])
-    product = cur.fetchone()
-    if result > 0:
-        return render_template('view_product.html', product=product)
-        
-    else:
-        msg = "Product was not found"
-        return render_template('view_product.html', msg =  msg)
-      
-    #Close connection
-    cur.close()
-    return render_template("view_product.html")
+
+
 
 
 
