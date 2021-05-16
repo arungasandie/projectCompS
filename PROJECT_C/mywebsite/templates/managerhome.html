@@ -21,19 +21,4 @@
         </tr>
         {%endfor%}
     </table>
-<h2>Sales</h2>
-    <table class="table table-striped">
-        <tr>
-            <th>ID</th>
-            <th>Serial number</th>
-            <th>Date of Sale</th>
-        </tr>
-        {% for sale in sales %}
-        <tr>
-            <td>{{sale.sale_id}}</td>
-            <td>{{sale.serial_number}}</td>
-            <td>{{sale.date_of_sale}}</td>
-        </tr>
-        {%endfor%}
-    </table>
 {% endblock %}

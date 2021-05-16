@@ -277,4 +277,76 @@ def mhome():
 def checkout():
     return render_template("checkout.html")
 
+#------------------manager view----------------------
+@auth.route('/msales')
+def adminproducts():
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM sales")
+    sales = cur.fetchall()
+
+    if result > 0 :
+        return render_template('msales.html' , sales=sales)
+    else:
+        msg = "No products found"
+        return render_template('msales.html', msg =  msg)
+
+    return render_template('msales.html')
+
+@auth.route('/outofstock')
+def outofstock():
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM stock WHERE items_available = 0")
+    outofstock = cur.fetchall()
+
+    if result > 0 :
+        return render_template('outofstock.html' , outofstock=outofstock)
+    else:
+        msg = "No products found"
+        return render_template('outofstock.html', msg =  msg)
+
+    return render_template('outofstock.html')
+
+@auth.route('/customers')
+def customers():
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM users WHERE NOT usertype='admin'")
+    users = cur.fetchall()
+
+    if result > 0 :
+        return render_template('customerslist.html' , users = users)
+    else:
+        msg = "No customers found"
+        return render_template('msales.html', msg =  msg)
+
+    return render_template('customerslist.html')
+
+@auth.route('/customersorders')
+def customersorders():
+    cur = mysql.connection.cursor()
+    result=cur.execute("SELECT * FROM sales WHERE status = 'PLACED'")
+    orders = cur.fetchall()
+
+    if result > 0 :
+        return render_template('customerorder.html' , orders=orders)
+    else:
+        msg = "No orders found"
+        return render_template('customerorder.html', msg =  msg)
+
+    return render_template('customerorder.html')
+
+@auth.route('/deliveries')
+def deliveries():
+    cur = mysql.connection.cursor()
+    result=cur.execute("SELECT * FROM sales WHERE status = 'DELIVERED'")
+    deliveries = cur.fetchall()
+
+    if result > 0 :
+        return render_template('deliveries.html' , deliveries=deliveries)
+    else:
+        msg = "No deliveries found"
+        return render_template('deliveries.html', msg =  msg)
+
+    return render_template('deliveries.html')
+
+
 

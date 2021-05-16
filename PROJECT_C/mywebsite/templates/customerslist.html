@@ -1,0 +1,32 @@
+{% extends 'adminbase.html' %}
+{% block content %}
+<table class="table table-striped">
+    <tr>
+        <th>Customer ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Usertype</th>
+        <th>Contact</th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for user in users %}
+    
+    <tr>
+        <td>{{user.c_id}}</td>
+        <td>{{user.username}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.usertype}}</td>
+        <td>{{user.contact}}</td>
+        <td><a href="/deleteuser/{{user.c_id}}" class="btn btn-danger" type="submit" value="Delete"><img src="https://img.icons8.com/material-two-tone/24/000000/add-trash.png">
+        </a>
+        </td>
+        <td>
+            <a href="/edituser/{{user.c_id}}"class="btn btn-primary" type="submit" value="EDIT">Edit
+            </a> 
+        </td>
+    </tr>
+    
+    {% endfor %}
+</table>
+{% endblock %}

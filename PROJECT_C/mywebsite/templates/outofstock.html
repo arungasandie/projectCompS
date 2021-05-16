@@ -1,0 +1,30 @@
+{% extends 'adminbase.html' %}
+{% block content %}
+<table class="table table-striped">
+    <tr>
+        <th>Item ID</th>
+        <th>Item name</th>
+        <th>Items Available</th>
+        <th>Item Price</th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for out in outofstock %}
+    
+    <tr>
+        <td>{{out.item_id}}</td>
+        <td>{{out.item_name}}</td>
+        <td>{{out.items_available}}</td>
+        <td>Ksh. {{out.item_price}}</td>
+        <td><a href="/deleteoutof/{{out.sale_id}}" class="btn btn-danger" type="submit" value="Delete"><img src="https://img.icons8.com/material-two-tone/24/000000/add-trash.png">
+        </a>
+        </td>
+        <td>
+            <a href="/editoutof/{{out.sale_id}}"class="btn btn-primary" type="submit" value="EDIT">Edit
+            </a> 
+        </td>
+    </tr>
+    
+    {% endfor %}
+</table>
+{% endblock %}
