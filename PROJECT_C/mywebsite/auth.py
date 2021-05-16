@@ -26,6 +26,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 #Initialize MySQL
 mysql = MySQL(app)
 
+#------------------------user log in------------------------------------
 @auth.route('/login',methods=['GET','POST'])
 def login():
     if request.method == 'POST':
@@ -75,19 +76,86 @@ def is_logged_in(f):
             return f(*args, **kwargs)
         else:
             flash("Unauthorized Please login", 'danger')
-            return redirect(url_for('login'))
+            return redirect(url_for('auth.login'))
     return wrap
-
-@auth.route('/loginoptions')
-def loginoption():
-    return render_template("loginoptions.html")
 
 @auth.route('/logout')
 @is_logged_in
 def logout():
     session.clear()
     flash('You are now logged out' , 'success')
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('auth.loginoption'))    
+
+#--------------------admin log in---------------------------------
+@auth.route('/adminlogin',methods=['GET','POST'])
+def admin_login():
+    if request.method == 'POST':
+        #Get form fields
+        username = request.form['username']
+        password_candidate = request.form['password']
+
+        #Create Cursor
+        cur = mysql.connection.cursor()
+
+        #Get user by username
+        result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+
+        if result > 0:
+            #Get stored hash
+            data = cur.fetchone()
+            password = data['password']
+            usertype=data['usertype']
+
+            #Compare Passwords
+            if sha256_crypt.verify(password_candidate, password):
+                if usertype=='admin':
+                    app.logger.info('PASSWORD MATCH')
+                    #Passed
+                    session['admin_logged_in'] = True
+                    session['username'] = username
+
+                    flash("You are now logged in" , 'success')
+                    return redirect(url_for('auth.mhome'))
+                else:
+                    flash("Login only for admin!", category='error')
+                    return render_template('loginoptions.html')
+            else:
+                error = 'Invalid login'
+                app.logger.info('PASSWORD NOT MATCHED')
+                return render_template('adminlogin.html', error = error)
+            
+            #close connection
+            cur.close()
+
+        else:
+            error = 'Username not found'
+            return render_template('adminlogin.html', error = error)
+
+    return render_template('adminlogin.html') 
+
+#check if admin is logged in
+def admin_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'admin_logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash("Unauthorized Please login", 'danger')
+            return redirect(url_for('auth.admin_login'))
+    return wrap
+
+@auth.route('/adminlogout')
+@admin_logged_in
+def adminlogout():
+    session.clear()
+    flash('You are now logged out' , 'success')
+    return redirect(url_for('auth.loginoption'))
+
+@auth.route('/loginoptions')
+def loginoption():
+    return render_template("loginoptions.html")
+
+
 
 #Register Form Class
 class RegisterForm(Form):
@@ -137,7 +205,7 @@ def signup():
 
             flash("You are now registed and can log in" , 'success')
 
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('auth.loginoption'))
 
     return render_template('signup.html')
 
@@ -184,6 +252,7 @@ def delete_order(id):
     return redirect(url_for('auth.cart'))
 
 @auth.route('/mhome')
+@admin_logged_in
 def mhome():
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM stock")

@@ -17,6 +17,8 @@ app.config['MYSQL_USER'] = 'sandra'
 app.config['MYSQL_PASSWORD'] = '1234'
 app.config['MYSQL_DB'] = 'projectsandra'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+
+#---------------view products home page-------------------------
 def laptop():
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM stock WHERE group_id = 1")
@@ -39,7 +41,8 @@ def audio():
     audio = cur.fetchall()
     cur.close()
 
-    return audio 
+    return audio
+
 #Initialize MySQL
 mysql = MySQL(app)
 @views.route('/')
@@ -131,6 +134,8 @@ def products():
     #Close connection
     cur.close()
     return render_template("products.html")
+
+ #-----------edit order--------------------------------------------   
 
 @views.route('/editorder/<string:id>', methods = ['GET','POST'])
 @is_logged_in

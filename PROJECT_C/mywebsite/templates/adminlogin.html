@@ -1,0 +1,24 @@
+{% extends "adminbase.html" %}
+{% block title %}Login as admin{% endblock %}
+{% block content %}
+<div class="container-sm mt-4">
+	<form method="POST">
+		<div class="text-center mb-4">
+			<h1 class="h3 mb-3 font-weight-normal">Login as Admin</h1>
+		</div>
+
+		<div class="form-group">
+			<label for="username">Username</label>
+			<input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
+		</div>
+
+		<div class="form-group">
+			<label for="password">Password</label>
+			<input type="password" class="form-control" required placeholder="Password" id="password" name="password" onchange="if(this.checkValidity()) form.password2.pattern = this.value;">
+		</div>
+
+		<button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" id="submit">Submit</button>
+    </br>
+	</form>
+</div>
+{% endblock %} 
