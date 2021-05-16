@@ -10,6 +10,10 @@
         <th width="120" >Quantity</th>
         <th>Item Price</th>
         <th>Subtotal</th>
+        <th>Delivery Place</th>
+        <th>Card Number</th>
+        <th>Status</th>
+
         <th></th>
         <th></th>
     </tr>
@@ -22,6 +26,9 @@
         <td>{{item.quantity}}</td>
         <td>Ksh. {{item.item_price}}</td>
         <td>Ksh. {{item.item_price*item.quantity}}</td>
+        <td>{{item.delivery_place}}</td>
+        <td>{{item.cardnumber}}</td>
+        <td>{{item.status}}</td>
         <td><a href="/deleteproduct/{{item.sale_id}}" class="btn btn-danger" type="submit" value="Delete"><img src="https://img.icons8.com/material-two-tone/24/000000/add-trash.png">
         </a>
         </td>

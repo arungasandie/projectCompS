@@ -1,3 +1,4 @@
+from mywebsite.auth import is_logged_in
 from flask import Blueprint, render_template
 from flask import Blueprint,render_template, request, flash
 from flask import Flask , redirect, url_for, session, logging, request
@@ -77,6 +78,43 @@ def product(id):
     #Close connection
     cur.close()
     return render_template("view_product.html")
+
+@views.route('/addtocart/<string:id>' ,methods=['GET','POST'])
+@is_logged_in
+def addtocart(id):
+    cur = mysql.connection.cursor()
+    #Get articles
+    result = cur.execute("SELECT * FROM stock WHERE item_id = %s",[id])
+    product = cur.fetchone()
+
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        
+        cardno = request.form.get('cardnumber')
+        quantity = request.form.get('quantity')
+        orderplace = request.form.get('delivery_place')
+        username=session['username']
+
+        # get user id
+        cid=cur.execute("SELECT c_id FROM users WHERE username= %s", [username])
+        c_id= cur.fetchone()
+        # get price 
+        item_price=cur.execute("SELECT item_price FROM stock WHERE item_id = %s",[id])
+        price=cur.fetchone()
+
+        #Get user by username
+        cur.execute("INSERT INTO sales (item_id, quantity, username, cardnumber, delivery_place, status) VALUES (%s,%s,%s,%s,%s,'PLACED')",(id, quantity, username, cardno, orderplace ))
+        #commit to database 
+        mysql.connection.commit()
+         
+        #Close Connection
+        cur.close()
+
+        flash("Order has been made" , 'success')
+
+        return redirect(url_for('auth.cart'))
+
+    return render_template('order.html',product=product)
 
 @views.route('/products')
 def products():
