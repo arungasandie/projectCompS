@@ -165,11 +165,12 @@ class OrderForm(Form):  # Create Order Form
     quantity = IntegerField('Quantity')
     order_place = StringField('Place')
 
+#Edit Order
 
 #Delete Product
-@auth.route('/deleteproduct/<string:id>')
+@auth.route('/deleteorder/<string:id>')
 @is_logged_in
-def delete_product(id):
+def delete_order(id):
     cur = mysql.connection.cursor()
 
     cur.execute("DELETE FROM sales WHERE sale_id = %s ", [id])

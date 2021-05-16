@@ -132,6 +132,40 @@ def products():
     cur.close()
     return render_template("products.html")
 
+@views.route('/editorder/<string:id>', methods = ['GET','POST'])
+@is_logged_in
+def edit_order(id):
+    #Create Cursor
+    cur = mysql.connection.cursor()
+    #Get order by ID
+    result = cur.execute("SELECT * FROM sales WHERE sale_id = %s", [id])
+    order = cur.fetchone()
+
+    #Get form details 
+    if request.method == 'POST':
+        cur = mysql.connection.cursor() 
+        cardno = request.form.get('cardnumber')
+        quantity = request.form.get('quantity')
+        orderplace = request.form.get('delivery_place')
+        username=session['username']
+        #Create Cursor
+        cur = mysql.connection.cursor()
+
+        #Execute
+        cur.execute("UPDATE sales SET cardnumber = %s, quantity = %s, delivery_place = %s WHERE sale_id = %s",(cardno , quantity, orderplace, id))
+
+        #Commit to DB
+        mysql.connection.commit()
+
+        #Close Connection
+        cur.close()
+        flash("Order Updated", 'success')
+
+        return redirect(url_for('auth.cart'))
+
+    return render_template('edit_order.html', order=order)    
+
+
 
 
 
