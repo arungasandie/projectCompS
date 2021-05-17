@@ -3,15 +3,15 @@
 <table class="table table-striped">
     <tr>
         <th>Sale ID</th>
-        <th>Item ID</th>
         <th>Item name</th>
-        <th width="120" >Quantity</th>
-        <th>Item Price</th>
-        <th>Subtotal</th>
-        <th>Delivery Place</th>
+        <th>Username</th>
         <th>Card Number</th>
+        <th>Quantity</th>
+        <th>Date Of Order</th>
+        <th>Date of delivery</th>
+        <th>Delivery Place</th>
+        <th>Subtotal</th>
         <th>Status</th>
-
         <th></th>
         <th></th>
     </tr>
@@ -19,11 +19,14 @@
     
     <tr>
         <td>{{sale.sale_id}}</td>
-        <td>{{sale.item_id}}</td>
         <td>{{sale.item_name}}</td>
-        <td>{{sale.quantity}}</td>
-        <td>{{sale.delivery_place}}</td>
+        <td>{{sale.username}}</td>
         <td>{{sale.cardnumber}}</td>
+        <td>{{sale.quantity}}</td>
+        <td>{{sale.date_of_order}}</td>
+        <td>{{sale.date_of_delivery}}</td>
+        <td>{{sale.delivery_place}}</td>
+        <td>{{sale.subtotal}}</td>
         <td>{{sale.status}}</td>
         <td><a href="/deletesale/{{sale.sale_id}}" class="btn btn-danger" type="submit" value="Delete"><img src="https://img.icons8.com/material-two-tone/24/000000/add-trash.png">
         </a>

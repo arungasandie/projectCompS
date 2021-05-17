@@ -120,16 +120,16 @@ def admin_login():
                     flash("Login only for admin!", category='error')
                     return render_template('loginoptions.html')
             else:
-                error = 'Invalid login'
+                flash('Invalid login', category='error')
                 app.logger.info('PASSWORD NOT MATCHED')
-                return render_template('adminlogin.html', error = error)
+                return render_template('adminlogin.html')
             
             #close connection
             cur.close()
 
         else:
-            error = 'Username not found'
-            return render_template('adminlogin.html', error = error)
+            flash('Username not found',category='error')
+            return render_template('adminlogin.html')
 
     return render_template('adminlogin.html') 
 
@@ -281,7 +281,7 @@ def checkout():
 @auth.route('/msales')
 def adminproducts():
     cur = mysql.connection.cursor()
-    result = cur.execute("SELECT * FROM sales")
+    result = cur.execute("SELECT sales.sale_id, stock.item_id,stock.item_name, sales.username, sales.cardnumber, sales.quantity, sales.date_of_order, sales.date_of_delivery, sales.delivery_place, sales.subtotal, sales.status FROM sales JOIN stock ON sales.item_id = stock.item_id")
     sales = cur.fetchall()
 
     if result > 0 :
@@ -323,7 +323,7 @@ def customers():
 @auth.route('/customersorders')
 def customersorders():
     cur = mysql.connection.cursor()
-    result=cur.execute("SELECT * FROM sales WHERE status = 'PLACED'")
+    result=cur.execute("SELECT sales.sale_id, stock.item_id, stock.item_name, sales.username, sales.cardnumber, sales.quantity, sales.date_of_order, sales.date_of_delivery, sales.delivery_place, sales.subtotal, sales.status FROM sales JOIN stock ON sales.item_id = stock.item_id WHERE status = 'PLACED'")
     orders = cur.fetchall()
 
     if result > 0 :
@@ -337,7 +337,7 @@ def customersorders():
 @auth.route('/deliveries')
 def deliveries():
     cur = mysql.connection.cursor()
-    result=cur.execute("SELECT * FROM sales WHERE status = 'DELIVERED'")
+    result=cur.execute("SELECT sales.sale_id, stock.item_id, stock.item_name, sales.username, sales.cardnumber, sales.quantity, sales.date_of_order, sales.date_of_delivery, sales.delivery_place, sales.subtotal, sales.status FROM sales JOIN stock ON sales.item_id = stock.item_id WHERE status = 'DELIVERED'")
     deliveries = cur.fetchall()
 
     if result > 0 :
