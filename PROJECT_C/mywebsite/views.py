@@ -21,7 +21,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 #---------------view products home page-------------------------
 def laptop():
     cur = mysql.connection.cursor()
-    result = cur.execute("SELECT * FROM stock WHERE group_id = 1")
+    result = cur.execute("SELECT * FROM stock WHERE group_id = 1 AND items_available >= 1;")
     laptops = cur.fetchall()
     cur.close
 
@@ -29,7 +29,7 @@ def laptop():
 
 def phone():
     cur = mysql.connection.cursor()
-    result = cur.execute("SELECT * FROM stock WHERE group_id = 2")
+    result = cur.execute("SELECT * FROM stock WHERE group_id = 2 AND items_available >= 1;")
     phones = cur.fetchall()
     cur.close()
 
@@ -37,7 +37,7 @@ def phone():
 
 def audio():
     cur = mysql.connection.cursor()
-    result = cur.execute("SELECT * FROM stock WHERE group_id = 3")
+    result = cur.execute("SELECT * FROM stock WHERE group_id = 3 AND items_available >= 1;")
     audio = cur.fetchall()
     cur.close()
 
@@ -52,7 +52,7 @@ def welcome():
 @views.route('/home')
 def home():
     cur = mysql.connection.cursor()
-    result = cur.execute("SELECT * FROM stock WHERE group_id = 1;")
+    result = cur.execute("SELECT * FROM stock WHERE group_id = 1 AND items_available >= 1;")
     laptops = laptop()
     phones = phone()
     audios = audio()
@@ -169,6 +169,8 @@ def edit_order(id):
         return redirect(url_for('auth.cart'))
 
     return render_template('edit_order.html', order=order)    
+
+
 
 
 
