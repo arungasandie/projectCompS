@@ -1,4 +1,4 @@
-from mywebsite.auth import is_logged_in
+from mywebsite.auth import is_logged_in, admin_logged_in
 from flask import Blueprint, render_template
 from flask import Blueprint,render_template, request, flash
 from flask import Flask , redirect, url_for, session, logging, request
@@ -107,6 +107,9 @@ def addtocart(id):
 
         #Get user by username
         cur.execute("INSERT INTO sales (item_id, quantity, username, cardnumber, delivery_place, status) VALUES (%s,%s,%s,%s,%s,'PLACED')",(id, quantity, username, cardno, orderplace ))
+        # update stock table 
+        cur.execute("UPDATE stock SET items_available= items_available- %s WHERE item_id = %s",(quantity, id))
+
         #commit to database 
         mysql.connection.commit()
          
@@ -122,7 +125,7 @@ def addtocart(id):
 @views.route('/products')
 def products():
     cur = mysql.connection.cursor()
-    result = cur.execute("SELECT * FROM stock")
+    result = cur.execute("SELECT * FROM stock WHERE items_available >= 1")
     products = cur.fetchall()
 
     if result > 0 :
@@ -134,6 +137,24 @@ def products():
     #Close connection
     cur.close()
     return render_template("products.html")
+
+#--------------view laptops -----------------------------------
+@views.route('/laptops')
+def viewlaptops():
+    products=laptop()
+    return render_template("products.html", products=products)
+
+#--------------view phones -----------------------------------
+@views.route('/phones')
+def viewphones():
+    products=phone()
+    return render_template("products.html", products=products)
+
+#--------------view audio -----------------------------------
+@views.route('/audioequipment')
+def viewaudio():
+    products=audio()
+    return render_template("products.html", products=products)
 
  #-----------edit order--------------------------------------------   
 
@@ -169,6 +190,43 @@ def edit_order(id):
         return redirect(url_for('auth.cart'))
 
     return render_template('edit_order.html', order=order)    
+
+@views.route('/base')
+def base():
+    return render_template('base.html')
+
+#---- ordering item as manager-----------------------------
+@views.route('/orderoutof/<string:id>' , methods=['GET','POST'])
+@admin_logged_in
+def companyorder(id):
+    cur = mysql.connection.cursor()
+    #Get articles
+    result = cur.execute("SELECT * FROM stock WHERE item_id = %s",[id])
+    product = cur.fetchone()
+
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        quantity = request.form.get('quantity')
+        orderplace = request.form.get('delivery_to_store_address')
+        username=session['username']
+
+        #Get user by username
+        cur.execute("INSERT INTO companyorders (item_id, quantity, delivery_to_store_address, username,  status) VALUES (%s,%s,%s,%s,'PLACED')",(id, quantity, orderplace, username, ))
+        #commit to database 
+        mysql.connection.commit()
+         
+        #Close Connection
+        cur.close()
+
+        flash("Order has been made" , 'success')
+
+        return redirect(url_for('auth.cdeliveries'))
+
+    return render_template('corder.html',product=product)
+
+@views.route('/links')
+def rr():
+    return redirect(url_for('https://www.youtube.com/watch?v=dQw4w9WgXcQ'))
 
 
 

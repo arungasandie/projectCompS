@@ -1,90 +1,85 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"
-  />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous"
-  />
-  <link rel="stylesheet" href="../static/static/css/home.css">
-
-  <title>{% block title %}Home{% endblock %}</title>
-
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../static/static/css/home.css">
+    <title>{% block title %}Home{% endblock %}</title>
 </head>
 <body>
-  <div>
-    <div>{% include 'includes/unavbar.html' %}</div>
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-        messages %} {% for category, message in messages %} {% if category ==
-        'error' %}
-        <div class="alert alert-danger alter-dismissable fade show" role="alert">
-          {{ message }}
-          <button type="button" class="close" data-dismiss="alert">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        {% else %}
-        <div class="alert alert-success alter-dismissable fade show" role="alert">
-          {{ message }}
-          <button type="button" class="close" data-dismiss="alert">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        {% endif %} {% endfor %} {% endif %} {% endwith %}
-      </div>
+    <div>
+        <div>{% include 'includes/unavbar.html' %}</div>
+    </div>
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+            messages %} {% for category, message in messages %} {% if category ==
+            'error' %}
+            <div class="alert alert-danger alter-dismissable fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% else %}
+            <div class="alert alert-success alter-dismissable fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% endif %} {% endfor %} {% endif %} {% endwith %}
+    </div>
     <div class= "container">
         {% block content %}
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
+        <script
+        src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"
+      ></script>
+      <script src="js/bootstrap.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+      
     {% endblock %}
     </div>
 </body>
 <!-- Footer -->
-<footer class="page-footer font-small teal darken-3 bg-dark">
+<footer class="page-footer font-small teal darken-3 bg-dark mb-md-0" style="height: 400px;">
     <div class="container">
         <h2 style="color: white;">The Ohm Depot</h2>
         <h3 style="color: white;">Electronics Store</h3>
         <!--brands -->
         <div class="brands">
-            <h4 style="color: whitesmoke; text-align: center;">In association with </h4>
-            <div class= "small-container">
-                <div class="row">
-                    <a href="#"><img src="https://img.icons8.com/color/48/000000/samsung.png"/></a>
-                    <a href="#"><img src="https://img.icons8.com/carbon-copy/100/000000/mac-os.png"/></a>
-                    <a href="#"><img src="https://img.icons8.com/fluent/48/000000/jbl.png"/></a>
-                    <a href="#"><img src="https://img.icons8.com/windows/32/000000/huawei-logo.png"/></a></br>
+          <div class= "row">
+            <h4 style="color: gold; text-align:justify;">In association with </h4>
+            <div class="col-md-12 py-4 mt-1">
+                <div class="flex-center" style="text-align: center;">
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.icons8.com/color/48/000000/samsung.png"/></a>
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.icons8.com/carbon-copy/100/000000/mac-os.png"/></a>
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.icons8.com/fluent/48/000000/jbl.png"/></a>
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.icons8.com/windows/32/000000/huawei-logo.png"/></a></br>
                 </div>
             </div>
+          </div>
         </div>
        <div class="row">
-        <h4 style="color: whitesmoke; text-align: center;">Find us on </h4>
-        <div class="col-md-12 py-5">
+        <h4 style="color: gold; align-items: center;">Find us on </h4>
+        <div class="col-md-12 py-4 mt-1">
           <div class=" flex-center" style="text-align: center;">
             <!-- Facebook -->
-            <a href="#"><img src="https://img.icons8.com/bubbles/100/000000/facebook-new.png"/></a>
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img width="70px" src="https://img.icons8.com/bubbles/100/000000/facebook-new.png"/></a>
             <!-- Twitter -->
-            <a href="#"><img src="https://img.icons8.com/bubbles/100/000000/twitter.png"/></a>
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img width="70px" src="https://img.icons8.com/bubbles/100/000000/twitter.png"/></a>
             <!--Instagram-->
-            <a href="#"><img src="https://img.icons8.com/bubbles/100/000000/instagram-new.png"/></a>
-            <!--Pinterest-->
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img width="70px" src="https://img.icons8.com/bubbles/100/000000/instagram-new.png"/></a>
+            <!--Behance-->
             <a class="pin-ic">
-                <img src="https://img.icons8.com/bubbles/100/000000/behance.png"/>
+                <img width="70px" src="https://img.icons8.com/bubbles/100/000000/behance.png"/>
             </a>
           </div>
         </div>

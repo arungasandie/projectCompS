@@ -8,6 +8,7 @@
         <th>Item Price</th>
         <th></th>
         <th></th>
+        <th></th>
     </tr>
     {% for out in outofstock %}
     
@@ -21,6 +22,10 @@
         </td>
         <td>
             <a href="/editoutof/{{out.sale_id}}"class="btn btn-primary" type="submit" value="EDIT">Edit
+            </a> 
+        </td>
+        <td>
+            <a href="/orderoutof/{{out.item_id}}"class="btn btn-success" type="submit" value="ORDER">Order
             </a> 
         </td>
     </tr>

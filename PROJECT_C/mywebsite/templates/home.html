@@ -3,74 +3,74 @@
 {% block content %}
 
 <head>
-    <!--<link rel="stylesheet" type="text/css" href="../static/home.css">-->
+    <link rel="stylesheet" type="text/css" href="../static/static/css/home.css">
 </head>
 <body>
     
     </br>
     <h1 style="text-align:center; font-weight:600;" >New Arrivals </h1>
-<div class="carousel mb-4">
-    <img style="margin-left: 70px;" class="open" src="../static/static/img/UE.jpg" alt="">
-</div>
-<div class="categories mb-4">
-    <h1 style="font-weight: bold;">Laptops</h1>
-    <div class = "small-container">
-        <div class = "row mt-4">
-            {% for laptop in laptops %}
-            <div class="col-mb-4">  
-                <div class="card">
-                    <div class="card-body">
-                        <img src="../static/static/img/{{laptop.item_name}}.jpg" class="card-img-top" alt="#laptop image">
-                        <h2 class="card-title">{{laptop.item_name}}</h2>
-                        <h3 class="card-text" style="font-weight: bold;">KSH. {{laptop.item_price}}</h3>
-                        <a style ="background-color: orange; border-color: orange; color: black;" class="btn pull-right" href="/products/{{laptop.item_id}}" ><img src="https://img.icons8.com/small/16/000000/shopping-bag.png">Add to Cart</a>
+    <div class="carousel mb-4">
+        <img style="margin-left: 60px; width:100%" class="open" src="../static/static/img/UE.jpg" alt="">
+    </div>
+    <!--Laptops-->
+    <div class="categories mb-4">
+        <h1 style="text-align: left ;font-weight: bold;">Laptops</h1>
+        <div class = "small-container">
+            <div class = "row mt-4">
+                {% for laptop in laptops %}
+                <div class= "col mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <img src="../static/static/img/{{laptop.item_name}}.jpg" class="card-img-top" alt="#laptop image">
+                            <h2 class="card-title">{{laptop.item_name}}</h2>
+                            <h3 class="card-text" style="font-weight: bold;">KSH. {{laptop.item_price}}</h3>
+                            <a style ="background-color: orange; border-color: orange; color: black;" class="btn pull-right" href="/products/{{laptop.item_id}}" ><img src="https://img.icons8.com/small/16/000000/shopping-bag.png">Add to Cart</a>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
-</div>
-<!-- Phoness 
-<div class="categories mb-4">
-    <h2 style="text-align: left; font-weight: bold;">Phones</h2>
-    <div class = "small-container">
-        <div class = "row mt-4"> 
-            {% for phone in phones %}  
-            <div class="col-mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <img src="../static/static/img/{{phone.item_name}}.jpg" class="card-img-top" alt="#laptop image">
-                        <h2 class="card-title">{{phone.item_name}}</h2>
-                        <h3 class="card-text" style="font-weight: bold;">KSH. {{phone.item_price}}</h3>
-                        <a style ="background-color: orange; border-color: orange;" href="products/{{phone.item_id}}" class="btn pull-right mt-4"><img src="https://img.icons8.com/small/16/000000/shopping-bag.png"/> Add To Cart</a>
-                    </div>  
-                </div>
-            </div>
-            {% endfor %}
-        </div> 
-    </div>   
-</div>
- Audio Equipment 
-<div class="categories mb-4">
-    <h2 style="text-align: left;  font-weight: bold;">Audio</h2>
-    <div class = "small-container">
-        <div class = "row mt-4">
-            {% for audio in audios %}
-            <div class="col-mb-4"> 
-                <div class="card">
-                    <div class="card-body">
-                        <img src="../static/static/img/{{audio.item_name}}.jpg" class="card-img-top" alt="#laptop image">
-                        <h2 class="card-title">{{audio.item_name}}</h2>
-                        <h3 class="card-text" style="font-weight: bold;">KSH. {{audio.item_price}}</h3>
-                        <a style ="background-color: orange; border-color: orange;" href="products/{{audio.item_id}}" class="btn pull-right"><img src="https://img.icons8.com/small/16/000000/shopping-bag.png"/> Add To Cart</a>
+    <!-- Phones-->
+    <div class="categories mb-4">
+        <h2 style="text-align: left; font-weight: bold;">Phones</h2>
+        <div class = "small-container">
+            <div class = "row mt-4"> 
+                {% for phone in phones %}  
+                <div class= "col mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <img src="../static/static/img/{{phone.item_name}}.jpg" class="card-img-top" alt="#laptop image">
+                            <h2 class="card-title">{{phone.item_name}}</h2>
+                            <h3 class="card-text" style="font-weight: bold;">KSH. {{phone.item_price}}</h3>
+                            <a style ="background-color: orange; border-color: orange;" href="products/{{phone.item_id}}" class="btn pull-right mt-4"><img src="https://img.icons8.com/small/16/000000/shopping-bag.png"/> Add To Cart</a>
+                        </div>  
                     </div>
                 </div>
+                {% endfor %}
+            </div> 
+        </div>   
+    </div>
+    <!--Audio Equipment-->
+    <div class="categories mb-4">
+        <h2 style="text-align: left;  font-weight: bold;">Audio</h2>
+        <div class = "small-container">
+            <div class = "row mt-4">
+                {% for audio in audios %}
+                <div class= "col mb-4">
+                    <div class="card" >
+                        <div class="card-body">
+                            <img src="../static/static/img/{{audio.item_name}}.jpg" class="card-img-top" alt="#laptop image">
+                            <h2 class="card-title">{{audio.item_name}}</h2>
+                            <h3 class="card-text" style="font-weight: bold;">KSH. {{audio.item_price}}</h3>
+                            <a style ="background-color: orange; border-color: orange;" href="products/{{audio.item_id}}" class="btn pull-right"><img src="https://img.icons8.com/small/16/000000/shopping-bag.png"/> Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
-</div>
 </body>
--->
 {% endblock %}

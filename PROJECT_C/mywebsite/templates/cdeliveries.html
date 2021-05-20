@@ -1,0 +1,37 @@
+{% extends 'adminbase.html' %}
+{% block content %}
+<h2>Orders to be sent to delivery company.</h2>
+<table class="table table-striped">
+    <tr>
+        <th>Delivery ID</th>
+        <th>Item name</th>
+        <th>Username</th>
+        <th>Quantity</th>
+        <th>Date Of Order</th>
+        <th>Delivery Place</th>
+        <th>Status</th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for del in cdeliveries %}
+    
+    <tr>
+        <td>{{del.delivery_id}}</td>
+        <td>{{del.item_name}}</td>
+        <td>{{del.username}}</td>
+        <td>{{del.quantity}}</td>
+        <td>{{del.date_of_order}}</td>
+        <td>{{del.delivery_to_store_address}}</td>
+        <td>{{del.status}}</td>
+        <td><a href="/deletedelivery/{{del.delivery_id}}" class="btn btn-danger" type="submit" value="Delete"><img src="https://img.icons8.com/material-two-tone/24/000000/add-trash.png">
+        </a>
+        </td>
+        <td>
+            <a href="/editdelivery/{{del.delivery_id}}"class="btn btn-primary" type="submit" value="EDIT">Edit
+            </a> 
+        </td>
+    </tr>
+    
+    {% endfor %}
+</table>
+{% endblock %}

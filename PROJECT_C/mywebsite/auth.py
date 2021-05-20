@@ -348,5 +348,19 @@ def deliveries():
 
     return render_template('deliveries.html')
 
+@auth.route('/cdeliveries')
+def cdeliveries():
+    cur = mysql.connection.cursor()
+    result=cur.execute("SELECT companyorders.delivery_id, stock.item_id, stock.item_name, companyorders.username, companyorders.quantity, companyorders.date_of_order, companyorders.delivery_to_store_address, companyorders.status FROM companyorders JOIN stock ON companyorders.item_id = stock.item_id")
+    cdeliveries = cur.fetchall()
+
+    if result > 0 :
+        return render_template('cdeliveries.html' , cdeliveries=cdeliveries)
+    else:
+        msg = "No deliveries found"
+        return render_template('cdeliveries.html', msg =  msg)
+
+    return render_template('cdeliveries.html')
+
 
 
