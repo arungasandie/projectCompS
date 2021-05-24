@@ -216,7 +216,7 @@ def signup():
 def cart():
     cur = mysql.connection.cursor()
     username = session['username']
-    result = cur.execute("SELECT sales.sale_id, sales.item_id, sales.quantity, sales.delivery_place, sales.status, sales.cardnumber, stock.item_name, stock.item_price, users.username FROM sales JOIN users ON sales.username = users.username JOIN stock ON sales.item_id = stock.item_id WHERE sales.status='PLACED' AND sales.username = %s",[username])
+    result = cur.execute("SELECT sales.sale_id, sales.item_id, sales.quantity, sales.delivery_place, sales.date_of_order, sales.date_of_delivery, sales.subtotal, sales.status, sales.cardnumber, stock.item_name, stock.item_price, users.username FROM sales JOIN users ON sales.username = users.username JOIN stock ON sales.item_id = stock.item_id WHERE sales.status='PLACED' AND sales.username = %s",[username])
     cart = cur.fetchall()
     if result < 1:
         msg="No items found found"
@@ -233,16 +233,114 @@ class OrderForm(Form):  # Create Order Form
     quantity = IntegerField('Quantity')
     order_place = StringField('Place')
 
-#Edit Order
+#-----------customer ordering---------------------------------------------
+@auth.route('/addtocart/<string:id>' ,methods=['GET','POST'])
+@is_logged_in
+def addtocart(id):
+    cur = mysql.connection.cursor()
+    #Get articles
+    result = cur.execute("SELECT * FROM stock WHERE item_id = %s",[id])
+    product = cur.fetchone()
 
-#Delete Product
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        
+        cardno = request.form.get('cardnumber')
+        quantity = request.form.get('quantity')
+        orderplace = request.form.get('delivery_place')
+        username=session['username']
+
+        # get user id
+        cid=cur.execute("SELECT c_id FROM users WHERE username= %s", [username])
+        c_id= cur.fetchone()
+        # get price 
+        itemprice=cur.execute("SELECT item_price FROM stock WHERE item_id = %s",[id])
+        if itemprice > 0:
+            #Get stored hash
+            itemp = cur.fetchone()
+            priceofitem = itemp['item_price']
+        subtotal = priceofitem * int(quantity)
+        
+
+
+        #Get user by username
+        cur.execute("INSERT INTO sales (item_id, quantity, username, cardnumber, delivery_place, subtotal, status) VALUES (%s,%s,%s,%s,%s,%s, 'PLACED')",(id, quantity, username, cardno, orderplace, subtotal))
+        # update subtotal
+        
+        # update stock table 
+        cur.execute("UPDATE stock SET items_available= items_available- %s WHERE item_id = %s",(quantity, id))
+
+        #commit to database 
+        mysql.connection.commit()
+         
+        #Close Connection
+        cur.close()
+
+        flash("Order has been made" , 'success')
+
+        return redirect(url_for('auth.cart'))
+
+    return render_template('order.html',product=product)
+#-----------edit order--------------------------------------------   
+
+@auth.route('/editorder/<string:id>', methods = ['GET','POST'])
+@is_logged_in
+def edit_order(id):
+    #Create Cursor
+    cur = mysql.connection.cursor()
+    #Get order by ID
+    result = cur.execute("SELECT * FROM sales WHERE sale_id = %s", [id])
+    order = cur.fetchone()
+
+    #Get form details 
+    if request.method == 'POST':
+        cur = mysql.connection.cursor() 
+        cardno = request.form.get('cardnumber')
+        quantity = request.form.get('quantity')
+        orderplace = request.form.get('delivery_place')
+        username=session['username']
+        #Create Cursor
+        cur = mysql.connection.cursor()
+
+        #Execute
+        cur.execute("UPDATE sales SET cardnumber = %s, quantity = %s, delivery_place = %s WHERE sale_id = %s",(cardno , quantity, orderplace, id))
+
+        #Commit to DB
+        mysql.connection.commit()
+
+        #Close Connection
+        cur.close()
+        flash("Order Updated", 'success')
+
+        return redirect(url_for('auth.cart'))
+
+    return render_template('edit_order.html', order=order)    
+
+#Delete Order
 @auth.route('/deleteorder/<string:id>')
 @is_logged_in
 def delete_order(id):
     cur = mysql.connection.cursor()
 
-    cur.execute("DELETE FROM sales WHERE sale_id = %s ", [id])
+    itemid=cur.execute("SELECT item_id FROM sales WHERE sale_id = %s ",[id])
+    if itemid > 0:
+            #Get stored hash
+            item_id = cur.fetchone()
+            item_id1 = item_id['item_id']
 
+ 
+
+    quantityb=cur.execute("SELECT quantity FROM sales WHERE sale_id = %s ",[id])
+    if quantityb > 0:
+            #Get stored hash
+            quantitybo = cur.fetchone()
+            quantitybought = quantitybo['quantity']
+
+    #delete sale
+    cur.execute("DELETE FROM sales WHERE sale_id = %s AND status = 'PLACED' ", [id])
+
+    # update stock table 
+    cur.execute("UPDATE stock SET items_available= items_available + %s WHERE item_id = %s",(quantitybought , item_id1))
     mysql.connection.commit()
 
     cur.close()
@@ -279,7 +377,7 @@ def checkout():
 
 #------------------manager view----------------------
 @auth.route('/msales')
-def adminproducts():
+def msales():
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT sales.sale_id, stock.item_id,stock.item_name, sales.username, sales.cardnumber, sales.quantity, sales.date_of_order, sales.date_of_delivery, sales.delivery_place, sales.subtotal, sales.status FROM sales JOIN stock ON sales.item_id = stock.item_id")
     sales = cur.fetchall()
@@ -361,6 +459,101 @@ def cdeliveries():
         return render_template('cdeliveries.html', msg =  msg)
 
     return render_template('cdeliveries.html')
+#------------------- staff edits status of sale------------------------------------------------------------------------- 
+@auth.route('/editsale/<string:id>', methods = ['GET','POST'])
+@admin_logged_in
+def edit_sale(id):
+    #Create Cursor
+    cur = mysql.connection.cursor()
+    #Get order by ID
+    result = cur.execute("SELECT * FROM sales WHERE sale_id = %s", [id])
+    order = cur.fetchone()
+
+    #Get form details 
+    if request.method == 'POST':
+        cur = mysql.connection.cursor() 
+        
+        status = request.form.get('status')
+        username=session['username']
+        #Create Cursor
+        cur = mysql.connection.cursor()
+
+        #Execute
+        cur.execute("UPDATE sales SET status = %s WHERE sale_id = %s",(status, id))
+
+        #Commit to DB
+        mysql.connection.commit()
+
+        #Close Connection
+        cur.close()
+        flash("Order Updated", 'success')
+
+        return redirect(url_for('auth.msales'))
+
+    return render_template('admineditorder.html', order=order)  
+
+#-----------------Delete Sale---------------------------------------------------------
+@auth.route('/deletesale/<string:id>')
+@is_logged_in
+def delete_sale(id):
+    cur = mysql.connection.cursor()
+
+    itemid=cur.execute("SELECT item_id FROM sales WHERE sale_id = %s ",[id])
+    if itemid > 0:
+            #Get stored hash
+            item_id = cur.fetchone()
+            item_id1 = item_id['item_id']
+
+ 
+
+    quantityb=cur.execute("SELECT quantity FROM sales WHERE sale_id = %s ",[id])
+    if quantityb > 0:
+            #Get stored hash
+            quantitybo = cur.fetchone()
+            quantitybought = quantitybo['quantity']
+
+    #delete sale
+    cur.execute("DELETE FROM sales WHERE sale_id = %s AND status = 'PLACED' ", [id])
+
+    # update stock table 
+    cur.execute("UPDATE stock SET items_available= items_available + %s WHERE item_id = %s",(quantitybought , item_id1))
+    mysql.connection.commit()
+
+    cur.close()
+
+    flash("Order deleted", 'success')
+
+    return redirect(url_for('auth.msales'))
+
+#---- ordering item as manager-----------------------------
+@auth.route('/orderoutof/<string:id>' , methods=['GET','POST'])
+@admin_logged_in
+def companyorder(id):
+    cur = mysql.connection.cursor()
+    #Get articles
+    result = cur.execute("SELECT * FROM stock WHERE item_id = %s",[id])
+    product = cur.fetchone()
+
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        quantity = request.form.get('quantity')
+        orderplace = request.form.get('delivery_to_store_address')
+        username=session['username']
+
+        #Get user by username
+        cur.execute("INSERT INTO companyorders (item_id, quantity, delivery_to_store_address, username,  status) VALUES (%s,%s,%s,%s,'PLACED')",(id, quantity, orderplace, username, ))
+        #commit to database 
+        mysql.connection.commit()
+         
+        #Close Connection
+        cur.close()
+
+        flash("Order has been made" , 'success')
+
+        return redirect(url_for('auth.cdeliveries'))
+
+    return render_template('corder.html',product=product)
+
 
 
 

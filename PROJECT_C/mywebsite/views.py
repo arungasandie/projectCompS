@@ -82,45 +82,7 @@ def product(id):
     cur.close()
     return render_template("view_product.html")
 
-@views.route('/addtocart/<string:id>' ,methods=['GET','POST'])
-@is_logged_in
-def addtocart(id):
-    cur = mysql.connection.cursor()
-    #Get articles
-    result = cur.execute("SELECT * FROM stock WHERE item_id = %s",[id])
-    product = cur.fetchone()
 
-    if request.method == 'POST':
-        cur = mysql.connection.cursor()
-        
-        cardno = request.form.get('cardnumber')
-        quantity = request.form.get('quantity')
-        orderplace = request.form.get('delivery_place')
-        username=session['username']
-
-        # get user id
-        cid=cur.execute("SELECT c_id FROM users WHERE username= %s", [username])
-        c_id= cur.fetchone()
-        # get price 
-        item_price=cur.execute("SELECT item_price FROM stock WHERE item_id = %s",[id])
-        price=cur.fetchone()
-
-        #Get user by username
-        cur.execute("INSERT INTO sales (item_id, quantity, username, cardnumber, delivery_place, status) VALUES (%s,%s,%s,%s,%s,'PLACED')",(id, quantity, username, cardno, orderplace ))
-        # update stock table 
-        cur.execute("UPDATE stock SET items_available= items_available- %s WHERE item_id = %s",(quantity, id))
-
-        #commit to database 
-        mysql.connection.commit()
-         
-        #Close Connection
-        cur.close()
-
-        flash("Order has been made" , 'success')
-
-        return redirect(url_for('auth.cart'))
-
-    return render_template('order.html',product=product)
 
 @views.route('/products')
 def products():
@@ -156,77 +118,13 @@ def viewaudio():
     products=audio()
     return render_template("products.html", products=products)
 
- #-----------edit order--------------------------------------------   
-
-@views.route('/editorder/<string:id>', methods = ['GET','POST'])
-@is_logged_in
-def edit_order(id):
-    #Create Cursor
-    cur = mysql.connection.cursor()
-    #Get order by ID
-    result = cur.execute("SELECT * FROM sales WHERE sale_id = %s", [id])
-    order = cur.fetchone()
-
-    #Get form details 
-    if request.method == 'POST':
-        cur = mysql.connection.cursor() 
-        cardno = request.form.get('cardnumber')
-        quantity = request.form.get('quantity')
-        orderplace = request.form.get('delivery_place')
-        username=session['username']
-        #Create Cursor
-        cur = mysql.connection.cursor()
-
-        #Execute
-        cur.execute("UPDATE sales SET cardnumber = %s, quantity = %s, delivery_place = %s WHERE sale_id = %s",(cardno , quantity, orderplace, id))
-
-        #Commit to DB
-        mysql.connection.commit()
-
-        #Close Connection
-        cur.close()
-        flash("Order Updated", 'success')
-
-        return redirect(url_for('auth.cart'))
-
-    return render_template('edit_order.html', order=order)    
+ 
 
 @views.route('/base')
 def base():
     return render_template('base.html')
 
-#---- ordering item as manager-----------------------------
-@views.route('/orderoutof/<string:id>' , methods=['GET','POST'])
-@admin_logged_in
-def companyorder(id):
-    cur = mysql.connection.cursor()
-    #Get articles
-    result = cur.execute("SELECT * FROM stock WHERE item_id = %s",[id])
-    product = cur.fetchone()
 
-    if request.method == 'POST':
-        cur = mysql.connection.cursor()
-        quantity = request.form.get('quantity')
-        orderplace = request.form.get('delivery_to_store_address')
-        username=session['username']
-
-        #Get user by username
-        cur.execute("INSERT INTO companyorders (item_id, quantity, delivery_to_store_address, username,  status) VALUES (%s,%s,%s,%s,'PLACED')",(id, quantity, orderplace, username, ))
-        #commit to database 
-        mysql.connection.commit()
-         
-        #Close Connection
-        cur.close()
-
-        flash("Order has been made" , 'success')
-
-        return redirect(url_for('auth.cdeliveries'))
-
-    return render_template('corder.html',product=product)
-
-@views.route('/links')
-def rr():
-    return redirect(url_for('https://www.youtube.com/watch?v=dQw4w9WgXcQ'))
 
 
 
