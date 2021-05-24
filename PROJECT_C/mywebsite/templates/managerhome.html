@@ -20,5 +20,55 @@
             <td>{{product.items_available}}</td>
         </tr>
         {%endfor%}
+    </table></br>
+    <h2>Top 2 Products by Unit Sales</h2>
+    <table class="table table-striped">
+        <tr>
+            <th>Item Id</th>
+            <th>Item name</th>
+            <th>Total sold</th>
+        </tr>
+        {% for topq in top2qty %}
+        <tr>
+            <td>{{topq.item_id}}</td>
+            <td>{{topq.item_name}}</td>
+            <td>{{topq.TotalQty}}</td> 
+        </tr>
+        {% endfor %}
+    </table></br>
+    <h2>Top 2 Products by Price</h2>
+    <table class="table table-striped">
+        <tr>
+            <th>Item Id</th>
+            <th>Item name</th>
+            <th>Item Price</th>
+            <th>Total sold</th>  
+        </tr>
+        {% for topq in top2prc %}
+        <tr>
+            <td>{{topq.item_id}}</td>
+            <td>{{topq.item_name}}</td>
+            <td>{{topq.ItemPrice}}</td>
+            <td>{{topq.TotalQty}}</td>
+            
+            
+        </tr>
+        {% endfor %}
+    </table>
+    <h2>Top Customer</h2>
+    <table class="table table-striped">
+        <tr>
+            <th>Customer ID</th>
+            <th>Username</th>
+            <th>Total Sales</th>     
+        </tr>
+        {% for top in topcustomer %}
+        <tr>
+            <td>{{top.c_id}}</td>
+            <td>{{top.username}}</td>
+            <td>{{top.Totalsales}}</td>
+            
+        </tr>
+        {% endfor %}
     </table>
 {% endblock %}

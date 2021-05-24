@@ -23,7 +23,7 @@ def laptop():
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM stock WHERE group_id = 1 AND items_available >= 1;")
     laptops = cur.fetchall()
-    cur.close
+    cur.close()
 
     return laptops
 
@@ -47,6 +47,7 @@ def audio():
 mysql = MySQL(app)
 @views.route('/')
 def welcome():
+    session.clear()
     return render_template("index.html")
 
 @views.route('/home')

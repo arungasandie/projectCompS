@@ -1,4 +1,5 @@
 
+from subprocess import STARTF_USESTDHANDLES
 from flask import Blueprint,render_template, request,flash
 from flask import Flask , redirect, url_for, session, logging, request
 from flask.globals import request
@@ -349,15 +350,45 @@ def delete_order(id):
 
     return redirect(url_for('auth.cart'))
 
+@auth.route('/checkout')
+def checkout():
+    return render_template("checkout.html")
+
+
+#------------------manager view----------------------
+
+def top2quantity():
+    cur = mysql.connection.cursor()
+    top2quantity = cur.execute("SELECT * FROM (SELECT sales.item_id, SUM(sales.quantity) 'TotalQty' , stock.item_name FROM sales JOIN stock ON stock.item_id = sales.item_id GROUP BY sales.item_id ORDER BY SUM(sales.quantity) DESC , sales.item_id ASC) A LIMIT 2;")
+    top2qty = cur.fetchall()
+    cur.close()
+    return top2qty
+
+def top2price():
+    cur = mysql.connection.cursor()
+    top2price = cur.execute("SELECT * FROM (SELECT sales.item_id, SUM(sales.quantity) 'TotalQty', MAX(stock.item_price) 'ItemPrice' , stock.item_name FROM sales JOIN stock ON stock.item_id = sales.item_id GROUP BY sales.item_id ORDER BY MAX(stock.item_price) DESC , sales.item_id ASC) A LIMIT 2;")
+    top2prc = cur.fetchall()
+    cur.close()
+    return top2prc
+
+def topcust():
+    cur = mysql.connection.cursor()
+    topcust= cur.execute("SELECT * FROM (SELECT sales.username, COUNT(sales.sale_id) 'Totalsales', users.c_id FROM sales JOIN stock ON stock.item_id = sales.item_id JOIN users ON sales.username = users.username GROUP BY sales.username ORDER BY COUNT(sales.sale_id) DESC, users.c_id ASC) A LIMIT 1;")
+    topcustomer = cur.fetchall()
+    cur.close()
+    return topcustomer
+
 @auth.route('/mhome')
 @admin_logged_in
 def mhome():
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM stock")
     products = cur.fetchall()
-
+    top2qty = top2quantity()
+    top2prc = top2price()
+    topcustomer = topcust()
     if result > 0 :
-        return render_template('managerhome.html' ,products=products)
+        return render_template('managerhome.html' ,products=products, top2qty=top2qty, top2prc= top2prc, topcustomer=topcustomer)
     else:
         msg = "No products found"
         return render_template('managerhome.html', msg =  msg)
@@ -371,17 +402,16 @@ def mhome():
     cur.close()
     return render_template("managerhome.html")
 
-@auth.route('/checkout')
-def checkout():
-    return render_template("checkout.html")
 
-#------------------manager view----------------------
+
+
+
 @auth.route('/msales')
 def msales():
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT sales.sale_id, stock.item_id,stock.item_name, sales.username, sales.cardnumber, sales.quantity, sales.date_of_order, sales.date_of_delivery, sales.delivery_place, sales.subtotal, sales.status FROM sales JOIN stock ON sales.item_id = stock.item_id")
     sales = cur.fetchall()
-
+    top2qty = top2quantity()
     if result > 0 :
         return render_template('msales.html' , sales=sales)
     else:
