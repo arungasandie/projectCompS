@@ -373,7 +373,7 @@ def top2price():
 
 def topcust():
     cur = mysql.connection.cursor()
-    topcust= cur.execute("SELECT * FROM (SELECT sales.username, COUNT(sales.sale_id) 'Totalsales', users.c_id FROM sales JOIN stock ON stock.item_id = sales.item_id JOIN users ON sales.username = users.username GROUP BY sales.username ORDER BY COUNT(sales.sale_id) DESC, users.c_id ASC) A LIMIT 1;")
+    topcust= cur.execute("SELECT * FROM ( SELECT sales.username, SUM(sales.subtotal) 'Totalsales', users.c_id  FROM sales JOIN stock ON stock.item_id = sales.item_id JOIN users ON sales.username = users.username  GROUP BY sales.username ORDER BY SUM(sales.subtotal) DESC, users.c_id ASC ) A LIMIT 1;")
     topcustomer = cur.fetchall()
     cur.close()
     return topcustomer
