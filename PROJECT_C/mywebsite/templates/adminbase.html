@@ -16,60 +16,7 @@
 
 </head>
 <body>
-    <div class="navbar">
-      <nav class = "navbar navbar-expand-lg navbar-light py-4" style="background-color:gold; color: black; width: 100%; font-size: large;">
-        <div class="logo">
-            <img src="https://img.icons8.com/ios-glyphs/30/000000/heater-resistor.png"/>
-        </div>
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">The Ohm Depot</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-    
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-          <ul class="navbar-nav me-auto mb-2 mb-md-0">
-            {% if session.admin_logged_in %}
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/mhome">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/msales">Sales</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/customersorders">Orders by Customers</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/deliveries">Deliveries to Customers</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/customers">Customers</a>
-              </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/outofstock">Out of stock</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/cdeliveries">Company Restock</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/adminlogout">Log Out</a>
-              </li>
-              
-            <li class="nav-item">
-                <img src="https://img.icons8.com/ios-glyphs/30/ffffff/test-account.png"/>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="" style="color: white;">{{session.username}}</a>
-              </li>
-              {% else %}
-              <li class="nav-item">
-                <a class="nav-link" href="/loginoptions">Log In</a>
-              </li>
-              {% endif %}
-          </ul>
-        </div>
-      </div>
-    </nav>
+  <div>{% include 'includes/anavbar.html' %}</div>  
         {% with messages = get_flashed_messages(with_categories=true) %} {% if
             messages %} {% for category, message in messages %} {% if category ==
             'error' %}
@@ -87,7 +34,7 @@
               </button>
             </div>
             {% endif %} {% endfor %} {% endif %} {% endwith %}
-    </div>
+   
     <div class= "container">
         {% block content %}
     <script
