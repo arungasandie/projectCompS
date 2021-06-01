@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Ohm Depot{% endblock %}
 {% block content %}
-
 <head>
     <link rel="stylesheet" type="text/css" href="../static/static/css/home.css">
 </head>
@@ -10,7 +9,7 @@
     </br>
     <h1 style="text-align:center; font-weight:600;" >New Arrivals </h1>
     <div class="carousel mb-4">
-        <img style="margin-left: 60px; width:100%" class="open" src="../static/static/img/UE.jpg" alt="">
+        <img style=" width:100%; align-items: center;" class="open" src="../static/static/img/UE.jpg" alt="">
     </div>
     <!--Laptops-->
     <div class="categories mb-4">
@@ -44,7 +43,7 @@
                             <img src="../static/static/img/{{phone.item_name}}.jpg" class="card-img-top" alt="#laptop image">
                             <h2 class="card-title">{{phone.item_name}}</h2>
                             <h3 class="card-text" style="font-weight: bold;">KSH. {{phone.item_price}}</h3>
-                            <a style ="background-color: orange; border-color: orange;" href="products/{{phone.item_id}}" class="btn pull-right mt-4"><img src="https://img.icons8.com/small/16/000000/shopping-bag.png"/> Add To Cart</a>
+                            <a style ="background-color: orange; border-color: orange; color:black" href="products/{{phone.item_id}}" class="btn pull-right mt-4"><img src="https://img.icons8.com/small/16/000000/shopping-bag.png"/> Add To Cart</a>
                         </div>  
                     </div>
                 </div>
@@ -64,7 +63,7 @@
                             <img src="../static/static/img/{{audio.item_name}}.jpg" class="card-img-top" alt="#laptop image">
                             <h2 class="card-title">{{audio.item_name}}</h2>
                             <h3 class="card-text" style="font-weight: bold;">KSH. {{audio.item_price}}</h3>
-                            <a style ="background-color: orange; border-color: orange;" href="products/{{audio.item_id}}" class="btn pull-right"><img src="https://img.icons8.com/small/16/000000/shopping-bag.png"/> Add To Cart</a>
+                            <a style ="background-color: orange; border-color: orange; color: black;" href="products/{{audio.item_id}}" class="btn pull-right"><img src="https://img.icons8.com/small/16/000000/shopping-bag.png"/> Add To Cart</a>
                         </div>
                     </div>
                 </div>
