@@ -407,6 +407,7 @@ def mhome():
 
 
 @auth.route('/msales')
+@admin_logged_in
 def msales():
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT sales.sale_id, stock.item_id,stock.item_name, sales.username, sales.cardnumber, sales.quantity, sales.date_of_order, sales.date_of_delivery, sales.delivery_place, sales.subtotal, sales.status FROM sales JOIN stock ON sales.item_id = stock.item_id")
