@@ -1,8 +1,10 @@
 {% extends 'adminbase.html' %}
 {% block content %}
+<h2>Damaged orders</h2>
+<h5>Items to be replaced as soon as possible</h5>
 <table class="table table-striped">
     <tr>
-        <th>Tracking Number</th>
+        <th>Tracking No</th>
         <th>Item name</th>
         <th>Username</th>
         <th>Card Number</th>
@@ -32,7 +34,7 @@
         </a>
         </td>
         <td>
-            <a href="/editsale/{{order.sale_id}}"class="btn btn-primary" type="submit" value="EDIT">Edit
+            <a href="/editsale/{{order.sale_id}}"class="btn btn-primary" type="submit" value="Edit">Edit
             </a> 
         </td>
     </tr>

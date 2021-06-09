@@ -1,5 +1,24 @@
 {% extends 'adminbase.html' %}
 {% block content %}
+</br>
+<h2>Top Customer</h2>
+    <table class="table table-striped">
+        <tr>
+            <th>Customer ID</th>
+            <th>Username</th>
+            <th>Total Sales</th>     
+        </tr>
+        {% for top in topcustomer %}
+        <tr>
+            <td>{{top.c_id}}</td>
+            <td>{{top.username}}</td>
+            <td>KSh. {{top.Totalsales}}</td>
+            
+        </tr>
+        {% endfor %}
+    </table>
+</br>
+<h2>All Customers</h2>
 <table class="table table-striped">
     <tr>
         <th>Customer ID</th>

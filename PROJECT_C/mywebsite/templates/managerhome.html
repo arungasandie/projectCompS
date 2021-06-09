@@ -2,7 +2,7 @@
 {% block title %}The Ohm Depot{% endblock %}
 {% block content %}
 <h1>Welcome Manager</h1>
-<h2>Products</h2>
+<h2>Products In WareHouse </h2>
     <table class="table table-striped">
         <tr>
             <th>ID</th>
@@ -55,20 +55,5 @@
         </tr>
         {% endfor %}
     </table>
-    <h2>Top Customer</h2>
-    <table class="table table-striped">
-        <tr>
-            <th>Customer ID</th>
-            <th>Username</th>
-            <th>Total Sales</th>     
-        </tr>
-        {% for top in topcustomer %}
-        <tr>
-            <td>{{top.c_id}}</td>
-            <td>{{top.username}}</td>
-            <td>KSh. {{top.Totalsales}}</td>
-            
-        </tr>
-        {% endfor %}
-    </table>
+    
 {% endblock %}

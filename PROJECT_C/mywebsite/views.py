@@ -18,7 +18,7 @@ app.config['MYSQL_PASSWORD'] = '1234'
 app.config['MYSQL_DB'] = 'projectsandra'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-#---------------view products home page-------------------------
+#---------------view products home page and categories -------------------------
 def laptop():
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM stock WHERE group_id = 1 AND items_available >= 1;")
@@ -119,11 +119,6 @@ def viewaudio():
     products=audio()
     return render_template("products.html", products=products)
 
- 
-
-@views.route('/base')
-def base():
-    return render_template('base.html')
 
 
 
